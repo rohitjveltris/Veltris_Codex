@@ -1,0 +1,51 @@
+{
+  "name": "veltris-codex-backend",
+  "version": "1.0.0",
+  "description": "AI-powered code generation backend with streaming support",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "express-rate-limit": "^7.1.5",
+    "openai": "^4.20.1",
+    "@anthropic-ai/sdk": "^0.9.1",
+    "diff": "^5.1.0",
+    "zod": "^3.22.4",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17",
+    "@types/diff": "^5.0.8",
+    "@types/node": "^20.9.0",
+    "tsx": "^4.1.4",
+    "typescript": "^5.2.2",
+    "vitest": "^1.0.1",
+    "supertest": "^6.3.3",
+    "@types/supertest": "^6.0.2",
+    "@vitest/coverage-v8": "^1.0.1",
+    "eslint": "^8.53.0",
+    "@typescript-eslint/parser": "^6.11.0",
+    "@typescript-eslint/eslint-plugin": "^6.11.0"
+  },
+  "keywords": [
+    "ai",
+    "code-generation",
+    "streaming",
+    "typescript",
+    "express"
+  ],
+  "author": "Veltris Team",
+  "license": "MIT"
+}
