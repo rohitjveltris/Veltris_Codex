@@ -7,7 +7,7 @@
 - Ollama (for local models)
 
 ## Installation Steps
-
+Clone the repository
 ### 1. Install Ollama
 ```bash
 curl -fsSL https://ollama.ai/install.sh | sh
