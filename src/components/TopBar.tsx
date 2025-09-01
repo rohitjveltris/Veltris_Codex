@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Zap, Settings, User, Sparkles, Wifi, WifiOff, AlertTriangle, RefreshCw, FolderOpen } from "lucide-react";
+import { Zap, Settings, User, Wifi, WifiOff, AlertTriangle, RefreshCw, FolderOpen, FlaskConical } from "lucide-react";
 
 
 import { useEffect } from 'react';
@@ -12,7 +12,7 @@ import { useConnectionStatus } from '@/hooks/useConnectionStatus';
 import { getModels } from '@/lib/api';
 
 export function TopBar() {
-  const { availableModels, selectedModel, modelsLoaded, dispatch, workingDirectory } = useAppContext();
+  const { availableModels, selectedModel, modelsLoaded, showTestGenerationPanel, dispatch, workingDirectory } = useAppContext();
   const [localWorkingDirectory, setLocalWorkingDirectory] = useState(workingDirectory || '');
   
   // Re-enable connection status with models loaded info
@@ -83,11 +83,13 @@ export function TopBar() {
     <div className="h-14 glass-effect border-b border-white/10 flex items-center justify-between px-6 relative z-50">
       {/* Logo and Brand */}
       <div className="flex items-center space-x-3">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-blue-500 flex items-center justify-center">
-          <Sparkles className="w-5 h-5 text-white" />
-        </div>
+        <img 
+          src="/veltris-small-icon.png" 
+          alt="Logo" 
+          className="w-8 h-8 object-contain"
+        />
         <div>
-          <h1 className="text-lg font-bold gradient-text">Veltris Codex</h1>
+          <h1 className="text-lg font-bold gradient-text">SDLC AI</h1>
           <div className="text-xs text-muted-foreground -mt-1">Professional Edition</div>
         </div>
       </div>
@@ -118,6 +120,16 @@ export function TopBar() {
 
       {/* Right Side Controls */}
       <div className="flex items-center space-x-3">
+        <Button 
+          variant={showTestGenerationPanel ? "default" : "ghost"}
+          size="sm" 
+          className={showTestGenerationPanel ? "bg-blue-600 hover:bg-blue-700" : "text-muted-foreground hover:text-foreground"}
+          onClick={() => dispatch({ type: 'SET_TEST_GENERATION_PANEL_VISIBILITY', payload: !showTestGenerationPanel })}
+          title="Toggle Test Generation Panel"
+        >
+          <FlaskConical className="w-4 h-4" />
+        </Button>
+
         <Select value={selectedModel?.id} onValueChange={(modelId) => dispatch({ type: 'SELECT_MODEL', payload: availableModels?.find(m => m.id === modelId) })}>
           <SelectTrigger className="w-40 bg-muted/50 border-white/10 hover:bg-muted/70 transition-all">
             <Zap className="w-4 h-4 text-emerald-400 mr-2" />

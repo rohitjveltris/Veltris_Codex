@@ -155,3 +155,83 @@ class RefactorResult(BaseModel):
     changes: List[RefactorChange] = Field(..., description="Applied changes")
     improvements: List[str] = Field(..., description="Improvements made")
     refactor_type: str = Field(..., description="Type of refactoring applied")
+
+
+# Test Generation Models
+class TestGenerationParams(BaseModel):
+    """Parameters for test generation."""
+    file_path: str = Field(..., description="File path to generate tests for")
+    code_content: str = Field(..., description="Code content to analyze")
+    test_types: Optional[List[str]] = Field(default=['unit'], description="Types of tests to generate")
+    framework: str = Field(default='auto', description="Testing framework to use")
+    coverage_target: float = Field(default=85.0, description="Target code coverage percentage")
+    mock_external: bool = Field(default=True, description="Whether to mock external dependencies")
+    include_edge_cases: bool = Field(default=True, description="Whether to include edge case tests")
+    max_tests_per_function: int = Field(default=8, description="Maximum tests per function")
+
+
+class TestCase(BaseModel):
+    """Individual test case."""
+    name: str = Field(..., description="Test case name")
+    description: str = Field(..., description="Test case description")
+    test_code: str = Field(..., description="Generated test code")
+    test_type: str = Field(..., description="Type of test (unit, integration, e2e)")
+    complexity_score: float = Field(..., description="Test complexity score")
+
+
+class MockData(BaseModel):
+    """Mock data for testing."""
+    name: str = Field(..., description="Mock data name")
+    type: str = Field(..., description="Mock data type")
+    sample_data: dict = Field(..., description="Sample mock data")
+    schema: Optional[dict] = Field(default=None, description="Data schema")
+
+
+class TestSuite(BaseModel):
+    """Complete test suite for a file."""
+    file_path: str = Field(..., description="Original source file path")
+    test_file_path: str = Field(..., description="Generated test file path")
+    framework: str = Field(..., description="Testing framework used")
+    language: str = Field(..., description="Programming language")
+    test_cases: List[TestCase] = Field(..., description="Generated test cases")
+    mock_data: List[MockData] = Field(..., description="Mock data used in tests")
+    setup_code: str = Field(..., description="Test setup code")
+    teardown_code: str = Field(..., description="Test teardown code")
+    imports: List[str] = Field(..., description="Required imports")
+    coverage_estimate: float = Field(..., description="Estimated code coverage")
+    quality_score: float = Field(..., description="Test quality score")
+
+
+class TestabilityAnalysis(BaseModel):
+    """Analysis of code testability."""
+    file_path: str = Field(..., description="File path analyzed")
+    testability_score: float = Field(..., description="Testability score (0-10)")
+    testable_functions: List[str] = Field(..., description="Functions that can be tested")
+    complex_functions: List[str] = Field(..., description="Complex functions needing attention")
+    dependencies: List[str] = Field(..., description="External dependencies")
+    existing_tests: List[str] = Field(..., description="Existing test functions found")
+    coverage_gaps: List[str] = Field(..., description="Functions without test coverage")
+    recommendations: List[str] = Field(..., description="Testability improvement recommendations")
+
+
+class BatchTestGenerationParams(BaseModel):
+    """Parameters for batch test generation."""
+    file_paths: List[str] = Field(..., description="List of file paths to generate tests for")
+    base_params: TestGenerationParams = Field(..., description="Base test generation parameters")
+
+
+class TestDataFactoryParams(BaseModel):
+    """Parameters for test data factory generation."""
+    schema: dict = Field(..., description="Data schema definition")
+    language: str = Field(default="typescript", description="Target language for factory")
+    factory_name: str = Field(default="TestDataFactory", description="Factory class name")
+
+
+class CoverageAnalysisResult(BaseModel):
+    """Test coverage analysis result."""
+    file_path: str = Field(..., description="File path analyzed")
+    current_coverage: float = Field(..., description="Current test coverage percentage")
+    uncovered_lines: List[int] = Field(..., description="Line numbers without coverage")
+    uncovered_functions: List[str] = Field(..., description="Functions without test coverage")
+    suggested_tests: List[str] = Field(..., description="Suggested tests to improve coverage")
+    coverage_report: dict = Field(..., description="Detailed coverage report")

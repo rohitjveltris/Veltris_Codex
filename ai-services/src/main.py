@@ -7,6 +7,7 @@ from src.config import settings
 from src.routes.chat import router as chat_router
 from src.routes.files import router as files_router
 from src.routes.models import router as models_router
+from src.routes.test_generation import router as test_generation_router
 from src.services.providers.openai_provider import OpenAIProvider
 from src.services.providers.claude_provider import ClaudeProvider
 from src.services.providers.ollama_provider import OllamaProvider
@@ -44,6 +45,7 @@ tool_executor_module.tool_executor = tool_executor_instance
 app.include_router(chat_router, prefix="/api")
 app.include_router(files_router, prefix="/api")
 app.include_router(models_router, prefix="/api")
+app.include_router(test_generation_router, prefix="/api")
 
 # Root endpoint
 @app.get("/")

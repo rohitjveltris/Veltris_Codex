@@ -24,6 +24,7 @@ interface AppState {
     api_docs: boolean;
   };
   showMultiCodeModal: boolean;
+  showTestGenerationPanel: boolean;
   diffApproval: DiffApprovalState;
   connectionState: ConnectionState;
   workingDirectory: string | null;
@@ -44,6 +45,7 @@ type Action =
   | { type: 'SET_DOCUMENTATION_MODAL_VISIBILITY'; payload: boolean }
   | { type: 'SET_DOCUMENTATION_SETTINGS'; payload: { brd: boolean; srd: boolean; readme: boolean; api_docs: boolean; } }
   | { type: 'SET_MULTI_CODE_MODAL_VISIBILITY'; payload: boolean }
+  | { type: 'SET_TEST_GENERATION_PANEL_VISIBILITY'; payload: boolean }
   | { type: 'SET_DIFF_APPROVAL'; payload: DiffApprovalState }
   | { type: 'SET_CONNECTION_STATE'; payload: ConnectionState }
   | { type: 'SET_WORKING_DIRECTORY'; payload: string | null };
@@ -65,6 +67,7 @@ const initialState: AppState = {
     api_docs: false,
   },
   showMultiCodeModal: false,
+  showTestGenerationPanel: false,
   diffApproval: {
     isOpen: false,
     modificationResult: null
@@ -111,6 +114,8 @@ const appReducer = (state: AppState, action: Action): AppState => {
       return { ...state, documentationSettings: action.payload };
     case 'SET_MULTI_CODE_MODAL_VISIBILITY':
       return { ...state, showMultiCodeModal: action.payload };
+    case 'SET_TEST_GENERATION_PANEL_VISIBILITY':
+      return { ...state, showTestGenerationPanel: action.payload };
     case 'SET_DIFF_APPROVAL':
       return { ...state, diffApproval: action.payload };
     case 'SET_CONNECTION_STATE':

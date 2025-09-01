@@ -9,6 +9,7 @@ import chatRoutes from './routes/chat.js';
 import modelsRoutes from './routes/models.js';
 import healthRoutes from './routes/health.js';
 import filesRoutes from './routes/files.js';
+import testGenerationRoutes from './routes/test-generation.js';
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use('/api/health', healthRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/models', modelsRoutes);
 app.use('/api/files', filesRoutes);
+app.use('/api/test-generation', testGenerationRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {

@@ -305,6 +305,80 @@ export const useAIChat = () => {
                 }
                 
                 dispatch({ type: 'UPDATE_LAST_CHAT_MESSAGE', payload: assistantMessage + message });
+              } else if (data.tool === 'generate_tests') {
+                const testResult = data.result;
+                let message = '\n\n## 🧪 Test Generation Complete\n\n';
+                
+                if (testResult.test_cases?.length > 0) {
+                  message += `**Generated Tests:** ${testResult.test_cases.length} test cases\n`;
+                  message += `**Coverage Estimate:** ${testResult.coverage_estimate?.toFixed(1) || 'N/A'}%\n`;
+                  message += `**Quality Score:** ${testResult.quality_score?.toFixed(1) || 'N/A'}/10\n`;
+                  message += `**Framework:** ${testResult.framework}\n`;
+                  message += `**Test File:** ${testResult.test_file_path}\n\n`;
+                  
+                  message += `**Test Types Generated:**\n`;
+                  const testTypes = [...new Set(testResult.test_cases.map(tc => tc.test_type))];
+                  testTypes.forEach(type => {
+                    const count = testResult.test_cases.filter(tc => tc.test_type === type).length;
+                    message += `- ${type}: ${count} tests\n`;
+                  });
+                  
+                  if (testResult.mock_data?.length > 0) {
+                    message += `\n**Mock Data:** ${testResult.mock_data.length} mock objects generated\n`;
+                  }
+                } else {
+                  message += '⚠️ No test cases were generated. Please check your code structure and try again.\n';
+                }
+                
+                dispatch({ type: 'UPDATE_LAST_CHAT_MESSAGE', payload: assistantMessage + message });
+              } else if (data.tool === 'analyze_testability') {
+                const analysisResult = data.result;
+                let message = '\n\n## 🔍 Testability Analysis Complete\n\n';
+                
+                message += `**Testability Score:** ${analysisResult.testability_score?.toFixed(1) || 'N/A'}/10\n`;
+                message += `**Testable Functions:** ${analysisResult.testable_functions?.length || 0}\n`;
+                message += `**Complex Functions:** ${analysisResult.complex_functions?.length || 0}\n`;
+                message += `**Dependencies:** ${analysisResult.dependencies?.length || 0}\n\n`;
+                
+                if (analysisResult.recommendations?.length > 0) {
+                  message += `**Recommendations:**\n`;
+                  analysisResult.recommendations.slice(0, 5).forEach((rec, index) => {
+                    message += `${index + 1}. ${rec}\n`;
+                  });
+                }
+                
+                if (analysisResult.coverage_gaps?.length > 0) {
+                  message += `\n**Functions Needing Tests:**\n`;
+                  analysisResult.coverage_gaps.slice(0, 5).forEach((func, index) => {
+                    message += `- ${func}\n`;
+                  });
+                }
+                
+                dispatch({ type: 'UPDATE_LAST_CHAT_MESSAGE', payload: assistantMessage + message });
+              } else if (data.tool === 'generate_test_data_factory') {
+                const factoryResult = data.result;
+                let message = '\n\n## 🏭 Test Data Factory Generated\n\n';
+                
+                message += `**Factory Name:** ${factoryResult.factory_name}\n`;
+                message += `**Language:** ${factoryResult.language}\n\n`;
+                message += `**Generated Code:**\n\`\`\`${factoryResult.language}\n${factoryResult.code}\n\`\`\`\n`;
+                
+                dispatch({ type: 'UPDATE_LAST_CHAT_MESSAGE', payload: assistantMessage + message });
+              } else if (data.tool === 'analyze_coverage') {
+                const coverageResult = data.result;
+                let message = '\n\n## 📊 Coverage Analysis Complete\n\n';
+                
+                message += `**Current Coverage:** ${coverageResult.current_coverage?.toFixed(1) || 'N/A'}%\n`;
+                message += `**Uncovered Functions:** ${coverageResult.uncovered_functions?.length || 0}\n\n`;
+                
+                if (coverageResult.suggested_tests?.length > 0) {
+                  message += `**Suggested Tests:**\n`;
+                  coverageResult.suggested_tests.slice(0, 5).forEach((test, index) => {
+                    message += `${index + 1}. ${test}\n`;
+                  });
+                }
+                
+                dispatch({ type: 'UPDATE_LAST_CHAT_MESSAGE', payload: assistantMessage + message });
               } else {
                 // Handle other tool results
                 dispatch({ type: 'UPDATE_LAST_CHAT_MESSAGE', payload: assistantMessage + `\n\nTool ${data.tool} executed with result: ${JSON.stringify(data.result)}` });

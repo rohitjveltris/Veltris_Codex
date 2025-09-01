@@ -144,6 +144,37 @@ export class AIProxyService {
       return false;
     }
   }
+
+  async post(endpoint: string, data: any): Promise<any> {
+    const response = await fetch(`${this.aiServiceUrl}${endpoint}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error(`AI Service error: ${response.status} ${response.statusText}`);
+    }
+
+    return response.json();
+  }
+
+  async get(endpoint: string): Promise<any> {
+    const response = await fetch(`${this.aiServiceUrl}${endpoint}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`AI Service error: ${response.status} ${response.statusText}`);
+    }
+
+    return response.json();
+  }
 }
 
 export const aiProxyService = new AIProxyService();
